@@ -8,6 +8,7 @@ import (
 	"context"
 	"sync/atomic"
 
+	"github.com/outcaste-io/lib/x"
 	"github.com/outcaste-io/ristretto/z"
 )
 
@@ -149,7 +150,7 @@ func (w *WaterMark) process(closer *z.Closer) {
 		// been done. Stop at the first index, which isn't done.
 		doneUntil := w.DoneUntil()
 		if doneUntil > index {
-			AssertTruef(false, "Name: %s doneUntil: %d. Index: %d", w.Name, doneUntil, index)
+			x.AssertTruef(false, "Name: %s doneUntil: %d. Index: %d", w.Name, doneUntil, index)
 		}
 
 		until := doneUntil
@@ -169,7 +170,7 @@ func (w *WaterMark) process(closer *z.Closer) {
 		}
 
 		if until != doneUntil {
-			AssertTrue(atomic.CompareAndSwapUint64(&w.doneUntil, doneUntil, until))
+			x.AssertTrue(atomic.CompareAndSwapUint64(&w.doneUntil, doneUntil, until))
 		}
 
 		notifyAndRemove := func(idx uint64, toNotify []chan struct{}) {

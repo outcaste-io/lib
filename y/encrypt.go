@@ -9,6 +9,8 @@ import (
 	"crypto/cipher"
 	"crypto/rand"
 	"io"
+
+	"github.com/pkg/errors"
 )
 
 // XORBlock encrypts the given data with AES and XOR's with IV.
@@ -43,7 +45,7 @@ func XORBlockStream(w io.Writer, src, key, iv []byte) error {
 	stream := cipher.NewCTR(block, iv)
 	sw := cipher.StreamWriter{S: stream, W: w}
 	_, err = io.Copy(sw, bytes.NewReader(src))
-	return Wrapf(err, "XORBlockStream")
+	return errors.Wrapf(err, "XORBlockStream")
 }
 
 // GenerateIV generates IV.

@@ -16,6 +16,20 @@ import (
 	"go.opencensus.io/tag"
 )
 
+var (
+	KeyDirType, _ = tag.NewKey("dir")
+
+	// DiskFree records the number of bytes free on the disk
+	DiskFree = stats.Int64("disk_free_bytes",
+		"Total number of bytes free on disk", stats.UnitBytes)
+	// DiskUsed records the number of bytes free on the disk
+	DiskUsed = stats.Int64("disk_used_bytes",
+		"Total number of bytes used on disk", stats.UnitBytes)
+	// DiskTotal records the number of bytes free on the disk
+	DiskTotal = stats.Int64("disk_total_bytes",
+		"Total number of bytes on disk", stats.UnitBytes)
+)
+
 func MonitorDiskMetrics(dirTag string, dir string, lc *z.Closer) {
 	defer lc.Done()
 	ctx, err := tag.New(context.Background(), tag.Upsert(KeyDirType, dirTag))

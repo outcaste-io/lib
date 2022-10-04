@@ -17,6 +17,7 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/outcaste-io/lib/x"
 	"github.com/pkg/errors"
 )
 
@@ -395,7 +396,7 @@ func (b *PageBuffer) Len() int {
 
 // pageForOffset returns pageIdx and startIdx for the offset.
 func (b *PageBuffer) pageForOffset(offset int) (int, int) {
-	AssertTrue(offset < b.length)
+	x.AssertTrue(offset < b.length)
 
 	var pageIdx, startIdx, sizeNow int
 	for i := 0; i < len(b.pages); i++ {
