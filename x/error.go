@@ -18,8 +18,11 @@ package x
 import (
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 
+	"github.com/dustin/go-humanize"
+	"github.com/outcaste-io/ristretto/z"
 	"github.com/pkg/errors"
 )
 
@@ -111,4 +114,14 @@ func MultiError(errs ...error) error {
 		}
 	}
 	return nil
+}
+
+func JemallocHandler(w http.ResponseWriter, r *http.Request) {
+	// AddCorsHeaders(w)
+
+	na := z.NumAllocBytes()
+	fmt.Fprintf(w, "Num Allocated Bytes: %s [%d]\n",
+		humanize.IBytes(uint64(na)), na)
+	fmt.Fprintf(w, "Allocators:\n%s\n", z.Allocators())
+	fmt.Fprintf(w, "%s\n", z.Leaks())
 }
