@@ -1,4 +1,4 @@
-module lib
+module github.com/outcaste-io/lib
 
 go 1.18
 
